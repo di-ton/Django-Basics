@@ -9,21 +9,37 @@ from django.utils.deconstruct import deconstructible
 class FileSizeValidator:
     def __init__(self, file_size_limit: int, message: Optional[str] = None):
         self.file_size_limit = file_size_limit
-        self.message = message
-
-
-    @property
-    def message(self):
-        return self.__message
-
-
-    @message.setter
-    def message(self, value):
-        if value is None:
-            self.__message = f"File size limit reached. File size must be less than {self.file_size_limit}MB."
-        self.__message = value
-
+        self._message = (
+            message
+            if message is not None
+            else f"File size limit reached. File size must be less than {file_size_limit}MB."
+        )
 
     def __call__(self, value: UploadedFile):
         if value.size > self.file_size_limit * 1024 * 1024:
-            raise ValidationError(self.__message)
+            raise ValidationError(self._message)
+
+
+# @deconstructible
+# class FileSizeValidator:
+#     def __init__(self, file_size_limit: int, message: Optional[str] = None):
+#         self.file_size_limit = file_size_limit
+#         self.message = message
+#
+#
+#     @property
+#     def message(self):
+#         return self.__message
+#
+#
+#     @message.setter
+#     def message(self, value):
+#         if value is None:
+#             self.__message = f"File size limit reached. File size must be less than {self.file_size_limit}MB."
+#         self.__message = value
+#
+#
+#     def __call__(self, value: UploadedFile):
+#         if value.size > self.file_size_limit * 1024 * 1024:
+#             raise ValidationError(self.__message)
+
