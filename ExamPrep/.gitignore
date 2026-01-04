@@ -1,0 +1,14 @@
+# Virtual environments
+.venv/
+venv/
+
+# IDEs
+.idea/
+
+# Django
+*.sqlite3
+__pycache__/
+*.pyc
+
+
+.env
